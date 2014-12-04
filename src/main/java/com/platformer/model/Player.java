@@ -32,6 +32,7 @@ public class Player extends DynamicElement {
     private Animation leftMove;
     private Animation rightMove;
     private final double RATE = 0.003;
+    private final float MAX_SPEED = 20;
 
     public Player(World world) {
         super(world);
@@ -46,23 +47,33 @@ public class Player extends DynamicElement {
     public void updatePosition() {
 
         Body body = getBody();
+        Vec2 vel = body.getLinearVelocity();
+
+        System.out.println("BEGIN: Player at position: x = " + body.getPosition().x + ", y = " + body.getPosition().y +
+                ". Direction is " + direction.name() + ". X velocity is " + vel.x);
+
         float xpos = Utils.toPixelPosX(body.getPosition().x);
         float ypos = Utils.toPixelPosY(body.getPosition().y);
         getNode().setLayoutX(xpos);
         getNode().setLayoutY(ypos);
 
-        Vec2 vel = body.getLinearVelocity();
+
+;
         switch (direction) {
             case LEFT:
-                vel.x = sp2Min(vel.x - 5f, -30f);
+                //vel.x = sp2Min(vel.x - 5f, -30f);
+                if(!maxSpeed(vel.x))
+                    body.applyLinearImpulse(new Vec2(-10, 0), body.getWorldCenter());
                 break;
             case RIGHT:
-                vel.x = sp2Max(vel.x + 5f, 30f);
+                //vel.x = sp2Max(vel.x + 5f, 30f);
+                if(!maxSpeed(vel.x))
+                    body.applyLinearImpulse(new Vec2(10, 0), body.getWorldCenter());
                 break;
             case STOP:
                 vel.x = vel.x * 0.95f;
-                body.setAngularVelocity(0);
-                if(vel.x < 0.01) {
+                //body.setAngularVelocity(0);
+                if(Math.abs(vel.x) < 0.1) {
                     body.setLinearVelocity(new Vec2(0,0));
                     body.setAngularVelocity(0);
                     direction = Direction.DEFFAULT;
@@ -73,7 +84,7 @@ public class Player extends DynamicElement {
 
         }
 
-        System.out.println("Player at position: x = " + body.getPosition().x + ", y = " + body.getPosition().y +
+        System.out.println("END: Player at position: x = " + body.getPosition().x + ", y = " + body.getPosition().y +
              ". Direction is " + direction.name() + ". X velocity is " + vel.x);
     }
 
@@ -116,8 +127,8 @@ public class Player extends DynamicElement {
                 break;
         }
 
-        if(!direction.equals(Direction.STOP))
-            direction = Direction.DEFFAULT;
+//        if(!direction.equals(Direction.STOP))
+//            direction = Direction.DEFFAULT;
 
 
     }
@@ -130,6 +141,7 @@ public class Player extends DynamicElement {
 
         FixtureDef fd = new FixtureDef();
         fd.shape = ps;
+        fd.friction = 0;
 
 
         BodyDef bd = new BodyDef();
@@ -188,6 +200,10 @@ public class Player extends DynamicElement {
         else
             return vel;
 
+    }
+
+    private boolean maxSpeed(float velocity) {
+        return Math.abs(velocity)>=MAX_SPEED;
     }
 
 
