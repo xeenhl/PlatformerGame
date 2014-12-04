@@ -6,11 +6,9 @@ import com.platformer.model.Element;
 import com.platformer.model.Player;
 import com.platformer.model.StaticElement;
 import org.jbox2d.collision.shapes.PolygonShape;
+import org.jbox2d.common.Settings;
 import org.jbox2d.common.Vec2;
-import org.jbox2d.dynamics.Body;
-import org.jbox2d.dynamics.BodyDef;
-import org.jbox2d.dynamics.BodyType;
-import org.jbox2d.dynamics.World;
+import org.jbox2d.dynamics.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,15 +21,14 @@ public class GameWorld {
     private final List<StaticElement> staticElements = new ArrayList<>();
     private final List<DynamicElement> dynamicElements = new ArrayList<>();
     private final World world = new World(new Vec2(0f, -10.0f));
-    private final Player player;
+    private Player player;
 
     //World step parameters
     private final float TIME_STEP = 1/60.0f;
-    private final int VELOCYTI_ITERATIONS = 8;
+    private final int VELOCYTI_ITERATIONS = 6;
     private final int POSITION_ITERATIONS = 3;
 
-    public GameWorld(Player p) {
-        player = p;
+    public GameWorld() {
         initWorld();
     }
 
@@ -58,6 +55,10 @@ public class GameWorld {
             throw new WrongElementTypeException(elm);
     }
 
+    public void addPlayer(Player p) {
+        player = p;
+    }
+
     public List getStaticelements() {
         return staticElements;
     }
@@ -80,11 +81,16 @@ public class GameWorld {
 
     private void addGround() {
         PolygonShape ground = new PolygonShape();
-        ground.setAsBox(1, 100);
+        ground.setAsBox(100, 10);
 
         BodyDef bd = new BodyDef();
         bd.type = BodyType.STATIC;
-        bd.position = new Vec2(0.0f,-10f);
+        bd.position = new Vec2(0.0f, -10.0f);
+
+        FixtureDef fd = new FixtureDef();
+        fd.shape = ground;
+
+        world.createBody(bd).createFixture(fd);
 
     }
 }
