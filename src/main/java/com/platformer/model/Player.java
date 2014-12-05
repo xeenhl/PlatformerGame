@@ -169,16 +169,20 @@ public class Player extends DynamicElement {
         if(rightMove != null)
             rightMove.stop();
 
-        switch (direction) {
-            case LEFT:
-                ((ImageView)getNode()).setImage(stendL);
-                direction = Direction.STOP;
-                break;
-            case RIGHT:
-                ((ImageView)getNode()).setImage(stendR);
-                direction = Direction.STOP;
-                break;
-        }
+            switch (direction) {
+                case LEFT:
+                    if(!isInJump)
+                        ((ImageView)getNode()).setImage(stendL);
+                    direction = Direction.STOP;
+                    break;
+                case RIGHT:
+                    if(!isInJump)
+                        ((ImageView)getNode()).setImage(stendR);
+                    direction = Direction.STOP;
+                    break;
+            }
+
+
 
 //        if(!direction.equals(Direction.STOP))
 //            direction = Direction.DEFFAULT;
