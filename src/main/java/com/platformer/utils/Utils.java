@@ -35,4 +35,23 @@ public class Utils {
         //float y = (- posY/PixelMeeterRatio) - offsetY;
         return y;
     }
+
+    //Convert a JBox2D width to pixel width
+    public static float toPixelWidth(float width) {
+        return WIDTH*width / 100.0f;
+    }
+
+    //Convert a JBox2D height to pixel height
+    public static float toPixelHeight(float height) {
+        return HEIGHT * height / 100.0f;
+    }
+
+    public static float toJBoxWidth(float width) {
+        return 100.0f * width / WIDTH;
+    }
+
+    public static float toJBoxHeight(float height) {
+        return 100.0f * height / WIDTH;
+    }
+
 }

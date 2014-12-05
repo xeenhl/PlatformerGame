@@ -87,7 +87,7 @@ public class GameWorld {
 
         BodyDef bd = new BodyDef();
         bd.type = BodyType.STATIC;
-        bd.position = new Vec2(0.0f, -7.0f);
+        bd.position = new Vec2(0.0f, -10.0f);
 
         FixtureDef fd = new FixtureDef();
         fd.shape = ground;

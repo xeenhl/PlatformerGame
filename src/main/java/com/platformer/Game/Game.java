@@ -59,6 +59,9 @@ public class Game extends Application{
                 case RIGHT:
                     player.moveRight();
                     break;
+                case SPACE:
+                    player.jump();
+                    break;
                 default:
                     System.out.println("Into default");
                     break;
